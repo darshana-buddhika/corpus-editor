@@ -73,7 +73,7 @@
         <input type="text" placeholder="Enter word here" id="search">
         <button id="searchBtn">Search</button>
 
-        <button onclick="writeToFile()">Save File</button>
+        <button onclick="saveFile()">Save File</button>
     </div>
 
     <hr>
@@ -84,6 +84,8 @@
         <h2 id="error"></h2>
         <input type="text" id="newTag" data-wordIndex="" data-sentenceIndex="" placeholder="Enter the tag that want to be changed">
         <button id="changeTagBtn" onclick="changeTag()">Change Tag</button>
+
+        <a download="corpus.txt" id="downloadlink" style="display: none">Download</a>
     </div>
 
     <div id="a"></div>
@@ -145,6 +147,8 @@
                 }
 
             }
+
+            sentences.push(sentence);  // if the corpus does not end with fullstop
 
         }
 
@@ -256,24 +260,56 @@
 
     }
 
-    function writeToFile() {
-        var confirm = window.confirm("Are sure want to save file");
+    // function writeToFile() {
+    //     var confirm = window.confirm("Are sure want to save file");
 
-        if (confirm == true) {
-            var object = new ActiveXObject("Scripting.FileSystemObject");
-            var file = object.CreateTextFile("Hello.txt", false);
-            for (var i of sentences) {
-                for (var j of i) {
-                    file.WriteLine(j.word + ' ' + j.tag);
-                    // file.WriteLine('Hope is a thing with feathers, that perches on the soul.');
-                }
+    //     if (confirm == true) {
+    //         var object = new ActiveXObject("Scripting.FileSystemObject");
+    //         var file = object.CreateTextFile("Hello.txt", false);
+    //         for (var i of sentences) {
+    //             for (var j of i) {
+    //                 file.WriteLine(j.word + ' ' + j.tag);
+    //                 // file.WriteLine('Hope is a thing with feathers, that perches on the soul.');
+    //             }
+    //         }
+
+    //         file.Close();
+    //     }else {
+
+    //     }
+
+    // }
+
+    function createText() {
+        var text = "";
+        for (var a of sentences) {
+            for (var w of a) {
+                text += w.word + " " + w.tag + "\n";
             }
-
-            file.Close();
-        }else {
-
         }
 
+        return text;
+    }
+
+    function makeTextFile(text) {
+        var data = new Blob([text], { type: 'text/plain' });
+
+        // If we are replacing a previously generated file we need to
+        // manually revoke the object URL to avoid memory leaks.
+        if (textFile !== null) {
+            window.URL.revokeObjectURL(textFile);
+        }
+
+        var textFile = window.URL.createObjectURL(data);
+
+        return textFile;
+    };
+
+    function saveFile() {
+        var text = createText();
+        var link = document.getElementById('downloadlink');
+        link.href = makeTextFile(text);
+        link.style.display = 'block';
     }
 
 </script>
