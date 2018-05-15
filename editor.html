@@ -247,8 +247,14 @@
 
         if (wordIndex && sentenceIndex) {
             if (newTag) {
+                var confirm = window.confirm("Are sure want to save file");
+                if(confirm){
+                    sentences[sentenceIndex][wordIndex].tag = newTag;
+                    error.innerText = "tag changed successfull";
+                }else {
 
-                sentences[sentenceIndex][wordIndex].tag = newTag;
+                }
+                
 
             } else {
                 error.innerText = "Please enter a new tag";
