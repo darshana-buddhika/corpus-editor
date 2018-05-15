@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Corpus Editor</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+            text-decoration: none;
+        }
+
+        div {
+            word-break: break-all;
+        }
+
+        p {
+            font-size: 13px;
+        }
+
+        input[type="file"] {
+            padding: 10px;
+            border: 1px solid lightcyan;
+        }
+
+        .search {
+            padding: 20px;
+        }
+
+        #search {
+            border: 1px lightblue solid;
+            margin: 0;
+            outline: none;
+            border-radius: 5px;
+            padding: 10px;
+            font-size: 15px;
+            /* display: inline-flex; */
+        }
+
+        .tag {
+            padding: 20px;
+            position: fixed;
+            width: 100%;
+            background: lightblue;
+        }
+
+        #searchBtn {
+            padding: 10px;
+            border: 1px solid lightgray;
+            outline: none;
+            transition: 0.2s ease-in;
+        }
+
+        #searchBtn:hover {
+            box-shadow: 0 1px 6px rgba(0, 0, 0, 0.25), 0 2px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        #a {
+            margin-top: 80px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="search">
+        <input type="file" name="textFile" id="file">
+
+        <input type="text" placeholder="Enter word here" id="search">
+        <button id="searchBtn">Search</button>
+
+        <button onclick="writeToFile()">Save File</button>
+    </div>
+
+    <hr>
+    <div class="tag">
+        <h3>Select a highlited text to get the tag</h3>
+        <!-- <button id="getTag">click here</button> -->
+        <p id="tag"></p>
+        <h2 id="error"></h2>
+        <input type="text" id="newTag" data-wordIndex="" data-sentenceIndex="" placeholder="Enter the tag that want to be changed">
+        <button id="changeTagBtn" onclick="changeTag()">Change Tag</button>
+    </div>
+
+    <div id="a"></div>
+
+</body>
+
+<script>
+
+    var sentences = [];
+    var tag = document.getElementById('tag');
+    var para = document.getElementById('a');
+    var error = document.getElementById('error');
+
+    var changeT = document.getElementById('changeTag');
+
+    document.getElementById('searchBtn').addEventListener('click', function () {
+        var w = document.getElementById('search').value;
+        error.innerText = "";
+        if (w) {
+
+            var result = findWord(w);
+
+            if (result.length != 0) {
+
+                printSentence(result, w);
+
+            } else {
+                error.innerText = "Couldent find the word u searched";
+            }
+
+        } else {
+            error.innerText = "Please Enter a Word in search box";
+        }
+    })
+
+    document.getElementById('file').addEventListener('change', function () {
+        var fr = new FileReader();
+        fr.onload = function () {
+            var text = this.result;
+            var sentence = [];
+            var line = text.split("\n");
+
+            for (var i = 0; i < line.length; i++) {
+                var w = line[i].replace("\r", "").split(" ");
+
+                wr = {};
+                if (w[0] == "." && w[1] == "FS") {
+                    wr.word = w[0];
+                    wr.tag = w[1];
+                    sentence.push(wr);
+                    sentences.push(sentence);
+                    sentence = [];
+                } else {
+
+                    wr.word = w[0];
+                    wr.tag = w[1];
+
+                    sentence.push(wr);
+                }
+
+            }
+
+        }
+
+        fr.readAsText(this.files[0], "UFT-8");
+    })
+
+    function findWord(word) {
+
+        var sen = [];
+        for (var a of sentences) {
+            for (var w of a) {
+
+                if (w.word == word) {
+                    sen.push(a);
+                    break;
+                }
+            }
+        }
+
+        return sen;
+
+    }
+
+    function printSentence(list, word) {
+        var sentence = '';
+        var sentenceIndex = 0;
+        for (var i of list) {
+            var wordIndex = 0;
+            sentenceIndex = sentences.indexOf(i);
+            sentence += "<p>";
+            for (var j of i) {
+
+                if (j.word == word) {
+                    // console.log("word has detected")
+                    sentence += "<mark data-tag='" + j.tag + "' data-sentenceIndex=" + sentenceIndex + " data-wordIndex=" + wordIndex + ">" + j.word + "</mark> ";
+                    wordIndex++;
+                } else {
+                    // console.log("word has detected else")
+                    sentence += j.word + " ";
+                    wordIndex++;
+                }
+
+            }
+
+            sentence += "</p><br>";
+
+        }
+
+        para.innerHTML = sentence;
+    }
+
+    // function showTag(a) {
+    //     console.log(a);
+    //     var m = window.getSelection.focusNode.parentElement;
+    //     console.log(m.dataset.tag);
+    // }
+
+    function getSelectedText() {
+
+        var list = [];
+        if (typeof window.getSelection != "undefined") {
+
+            t = window.getSelection().focusNode.parentElement;
+
+            list.push(t.dataset.tag);
+            list.push(t.getAttribute('data-wordIndex'));
+            list.push(t.getAttribute('data-sentenceIndex'));
+
+        } else if (typeof document.selection != "undefined" && document.selection.type == "Text") {
+            text = document.selection.createRange().text;
+        }
+        return list;
+    }
+
+    function doSomethingWithSelectedText() {
+        var dd = document.getElementById('newTag');
+        var selectedText = getSelectedText();
+        if (selectedText[0]) {
+            dd.setAttribute('data-wordIndex', selectedText[1]);
+            dd.setAttribute('data-sentenceIndex', selectedText[2]);
+            tag.innerText = selectedText[0];
+
+        }
+    }
+
+    document.onmouseup = doSomethingWithSelectedText;
+    document.ondblclick = doSomethingWithSelectedText;
+
+    function changeTag() {
+        error.innerText = "";
+        var newTagElement = document.getElementById('newTag');
+
+        var newTag = newTagElement.value;
+        var wordIndex = newTagElement.getAttribute('data-wordIndex');
+        var sentenceIndex = newTagElement.getAttribute('data-sentenceIndex');
+
+        if (wordIndex && sentenceIndex) {
+            if (newTag) {
+
+                sentences[sentenceIndex][wordIndex].tag = newTag;
+
+            } else {
+                error.innerText = "Please enter a new tag";
+            }
+        } else {
+            error.innerText = "Please select a word to chnage tag";
+        }
+
+
+    }
+
+    function writeToFile() {
+        var confirm = window.confirm("Are sure want to save file");
+
+        if (confirm == true) {
+            var object = new ActiveXObject("Scripting.FileSystemObject");
+            var file = object.CreateTextFile("Hello.txt", false);
+            for (var i of sentences) {
+                for (var j of i) {
+                    file.WriteLine(j.word + ' ' + j.tag);
+                    // file.WriteLine('Hope is a thing with feathers, that perches on the soul.');
+                }
+            }
+
+            file.Close();
+        }else {
+
+        }
+
+    }
+
+</script>
+
+</html>
+
+
+
+<!--  -->
