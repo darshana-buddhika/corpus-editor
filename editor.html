@@ -51,6 +51,32 @@
 		    height: 100%;
 		    padding-bottom: 2%;
 		}
+		/* Tooltip container */
+		.tooltip {
+		    /*position: relative;*/
+		    display: inline-block;
+		    /*border-bottom: 1px dotted black;  //If you want dots under the hoverable text */
+		}
+
+		/* Tooltip text */
+		.tooltip .tooltiptext {
+		    visibility: hidden;
+		    width: 120px;
+		    background-color: black;
+		    color: #fff;
+		    text-align: center;
+		    padding: 5px 0;
+		    border-radius: 6px;
+		 
+		    /* Position the tooltip text - see examples below! */
+		    position: absolute;
+		    z-index: 1;
+		}
+
+		/* Show the tooltip text when you mouse over the tooltip container */
+		.tooltip:hover .tooltiptext {
+		    visibility: visible;
+		}
 
         #searchBtn {
             padding: 10px;
@@ -83,7 +109,7 @@
     <hr>
     <dir class="tag-wrapper">
 	    <div class="tag">
-	        <h3>Select a highlited text to get the tag</h3>
+	        <h3>Select a highlited text to set the tag</h3>
 	        <!-- <button id="getTag">click here</button> -->
 	        <p id="tag"></p>
 	        <h2 id="error" style="color: red"></h2>
@@ -192,11 +218,11 @@
 
                 if (j.word == word) {
                     // console.log("word has detected")
-                    sentence += "<mark data-tag='" + j.tag + "' data-sentenceIndex=" + sentenceIndex + " data-wordIndex=" + wordIndex + ">" + j.word + "</mark> ";
+                    sentence += "<div class='tooltip'>" +"<mark data-tag='" + j.tag + "' data-sentenceIndex=" + sentenceIndex + " data-wordIndex=" + wordIndex + ">" + j.word + "</mark> "+ "&nbsp;"+ "<span class='tooltiptext'>" + j.tag + "</span> </div>";
                     wordIndex++;
                 } else {
                     // console.log("word has detected else")
-                    sentence += j.word + " ";
+                    sentence += "<div class='tooltip'>" + j.word + "&nbsp;" + "<span class='tooltiptext'>" + j.tag + "</span> </div>";
                     wordIndex++;
                 }
 
@@ -265,8 +291,8 @@
                     sentences[sentenceIndex][wordIndex].tag = newTag;
                     error.innerText = "tag changed successfull";
                     error.style.color = 'blue';
-                    newTagElement.setAttribute('data-tag',newTag);
-                    this.findWord(wordText);	
+                    // newTagElement.setAttribute('data-tag',newTag);			//Failed
+                    // this.findWord(wordText);	
                 }else {
 
                 }
