@@ -47,6 +47,10 @@
             width: 100%;
             background: lightblue;
         }
+        .tag-wrapper {
+		    height: 100%;
+		    padding-bottom: 2%;
+		}
 
         #searchBtn {
             padding: 10px;
@@ -77,17 +81,22 @@
     </div>
 
     <hr>
-    <div class="tag">
-        <h3>Select a highlited text to get the tag</h3>
-        <!-- <button id="getTag">click here</button> -->
-        <p id="tag"></p>
-        <h2 id="error"></h2>
-        <input type="text" id="newTag" data-wordIndex="" data-sentenceIndex="" placeholder="Enter the tag that want to be changed">
-        <button id="changeTagBtn" onclick="changeTag()">Change Tag</button>
+    <dir class="tag-wrapper">
+	    <div class="tag">
+	        <h3>Select a highlited text to get the tag</h3>
+	        <!-- <button id="getTag">click here</button> -->
+	        <p id="tag"></p>
+	        <h2 id="error" style="color: red"></h2>
 
-        <a download="corpus.txt" id="downloadlink" style="display: none">Download</a>
-    </div>
-
+			<div class="row">
+				 <input type="text" id="newTag" data-wordIndex="" data-sentenceIndex="" placeholder="Enter the tag that want to be changed">
+	        	<button id="changeTagBtn" onclick="changeTag()">Change Tag</button>
+				<input type="radio" name="change_method" id="change_method"  value="all" checked> All</input>
+				 <input type="radio" name="change_method"  id= "change_method" value="one"> One</input>
+			</div>
+	        <a download="corpus.txt" id="downloadlink" style="display: none">Download</a>
+	    </div>
+	</dir>
     <div id="a"></div>
 
 </body>
@@ -230,6 +239,7 @@
             dd.setAttribute('data-wordIndex', selectedText[1]);
             dd.setAttribute('data-sentenceIndex', selectedText[2]);
             tag.innerText = selectedText[0];
+            error.innerText = "";
 
         }
     }
@@ -239,18 +249,24 @@
 
     function changeTag() {
         error.innerText = "";
+
         var newTagElement = document.getElementById('newTag');
+
+        var change_method = document.getElementById('change_method');
 
         var newTag = newTagElement.value;
         var wordIndex = newTagElement.getAttribute('data-wordIndex');
         var sentenceIndex = newTagElement.getAttribute('data-sentenceIndex');
-
+        var wordText = newTagElement.innerText;
         if (wordIndex && sentenceIndex) {
             if (newTag) {
-                var confirm = window.confirm("Are sure want to save file");
+                var confirm = window.confirm("Are sure want to chnage tag");
                 if(confirm){
                     sentences[sentenceIndex][wordIndex].tag = newTag;
                     error.innerText = "tag changed successfull";
+                    error.style.color = 'blue';
+                    newTagElement.setAttribute('data-tag',newTag);
+                    this.findWord(wordText);	
                 }else {
 
                 }
