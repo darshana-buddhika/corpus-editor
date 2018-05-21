@@ -49,7 +49,7 @@
         }
         .tag-wrapper {
 		    height: 100%;
-		    padding-bottom: 2%;
+		    padding-bottom: 7%;
 		}
 		/* Tooltip container */
 		.tooltip {
@@ -77,6 +77,7 @@
 		.tooltip:hover .tooltiptext {
 		    visibility: visible;
 		}
+		
 
         #searchBtn {
             padding: 10px;
@@ -98,12 +99,13 @@
 <body>
 
     <div class="search">
-        <input type="file" name="textFile" id="file">
+        <input type="file" name="textFile" id="file" style="height: 50px; width: 400px; display: inline;
+    float: none;">
 
         <input type="text" placeholder="Enter word here" id="search">
-        <button id="searchBtn">Search</button>
+        <button id="searchBtn" autofocus>Search</button>
 
-        <button onclick="saveFile()">Save File</button>
+        <button onclick="saveFile()" style="height: 35px; width: 150px">Save File</button>
     </div>
 
     <hr>
@@ -115,10 +117,10 @@
 	        <h2 id="error" style="color: red"></h2>
 
 			<div class="row">
-				 <input type="text" id="newTag" data-wordIndex="" data-sentenceIndex="" placeholder="Enter the tag that want to be changed">
-	        	<button id="changeTagBtn" onclick="changeTag()">Change Tag</button>
-				<input type="radio" name="change_method" id="change_method"  value="all" checked> All</input>
-				 <input type="radio" name="change_method"  id= "change_method" value="one"> One</input>
+				 <input type="text" id="newTag" data-wordIndex="" data-sentenceIndex="" style="height: 35px;" placeholder="Enter the new Tag">
+	        	<button id="changeTagBtn" onclick="changeTag()" style="height: 35px; width: 150px">Change Tag</button>
+	        	<button id="changeAllTagBtn" onclick="changeAllTags()" style="height: 35px; width: 150px">Change All Tags</button>
+
 			</div>
 	        <a download="corpus.txt" id="downloadlink" style="display: none">Download</a>
 	    </div>
@@ -191,7 +193,7 @@
     })
 
     function findWord(word) {
-
+    	console.log(word);
         var sen = [];
         for (var a of sentences) {
             for (var w of a) {
@@ -277,35 +279,87 @@
         error.innerText = "";
 
         var newTagElement = document.getElementById('newTag');
-
-        var change_method = document.getElementById('change_method');
-
         var newTag = newTagElement.value;
         var wordIndex = newTagElement.getAttribute('data-wordIndex');
         var sentenceIndex = newTagElement.getAttribute('data-sentenceIndex');
-        var wordText = newTagElement.innerText;
-        if (wordIndex && sentenceIndex) {
-            if (newTag) {
-                var confirm = window.confirm("Are sure want to chnage tag");
-                if(confirm){
-                    sentences[sentenceIndex][wordIndex].tag = newTag;
-                    error.innerText = "tag changed successfull";
-                    error.style.color = 'blue';
-                    // newTagElement.setAttribute('data-tag',newTag);			//Failed
-                    // this.findWord(wordText);	
-                }else {
 
-                }
-                
+        	 if (wordIndex && sentenceIndex) {
+	            if (newTag) {
+	                var confirm = window.confirm("Are sure want to chnage tag");
+	                if(confirm){
+	                    sentences[sentenceIndex][wordIndex].tag = newTag;
+	                    error.innerText = "tag changed successfull";
+	                    error.style.color = 'blue';
+	                    var wordText = sentences[sentenceIndex][wordIndex].word;
+	                   	// console.log(wordText);
+	                    // newTagElement.setAttribute('data-tag',newTag);			//Failed
+		            	var result = findWord(wordText);
+		                printSentence(result, wordText);
+	                }else {
 
-            } else {
-                error.innerText = "Please enter a new tag";
-            }
-        } else {
-            error.innerText = "Please select a word to chnage tag";
-        }
+	                }
+	                
 
+	            } else {
+	                error.innerText = "Please enter a new tag";
+	            }
+	        } else {
+	            error.innerText = "Please select a word to chnage tag";
+	        }
+    }
 
+    function changeAllTags(){
+        error.innerText = "";
+
+        var newTagElement = document.getElementById('newTag');
+        var newTag = newTagElement.value;
+        var wordIndex = newTagElement.getAttribute('data-wordIndex');
+        var sentenceIndex = newTagElement.getAttribute('data-sentenceIndex');
+
+    	    if (wordIndex && sentenceIndex) {
+	            if (newTag) {
+	                var confirm = window.confirm("Are sure want to chnage tags for All the Words !");
+	                if(confirm){
+	                    var oldTag = sentences[sentenceIndex][wordIndex].tag;
+	                    var wordText = sentences[sentenceIndex][wordIndex].word;
+	                   	// console.log(wordText);
+	                    // newTagElement.setAttribute('data-tag',newTag);			//Failed
+	                    for(var sentence in sentences){
+	                    	for(var word in sentence){
+	                    		var wordObj = sentences[sentence][word];
+	                    		// console.log(wordObj);
+	                    		if(wordObj){
+									if(wordObj.word === wordText){
+										if(wordObj.tag === oldTag){
+											wordObj.tag = newTag;
+	                    					console.log(wordObj);
+										}
+										else{
+											console.log(wordObj);
+
+										}
+	                    			}
+
+	                    		}
+	                    
+	                    	}
+	                    }
+						error.innerText = "tag changed successfull";
+	                    error.style.color = 'blue';
+		            	var result = findWord(wordText);
+		                printSentence(result, wordText);
+	                }else {
+
+	                }
+	                
+
+	            } else {
+	                error.innerText = "Please enter a new tag";
+	            }
+	        } else {
+	            error.innerText = "Please select a word to chnage tag";
+	        }
+              
     }
 
     // function writeToFile() {
