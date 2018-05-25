@@ -134,8 +134,12 @@
         error.innerText = "";
         if (w) {
             var result = findWord(w);
+            var tagResult =findWordByTag(w);
+            // console.log("this is the sorted results");
+            // console.log(tagResult);
             if (result.length != 0) {
-                printSentence(result, w);
+                // printSentence(result, w);
+                printSentenceInTags(tagResult,w);
             } else {
                 error.innerText = "Couldent find the word u searched";
             }
@@ -179,11 +183,38 @@
             }
         }
         return sen;
+        
+    }
+    function findWordByTag(word) {
+        var sorted = {};
+        for (var a of sentences) {
+            for (var w of a) {
+                if (w.word == word) {
+                    let tag=w.tag;
+                    //sen.push(a);
+                    if((w.tag in sorted)){
+                        //tag exists
+                        sorted[tag].push(a);
+                    }
+                    //tag is not there
+                    else{
+                        sorted[tag]=[a];     
+                    }
+
+                        
+                    break;
+                }
+            }
+        }
+        return sorted;
     }
     function printSentence(list, word) {
+
         var sentence = '';
         var sentenceIndex = 0;
         for (var i of list) {
+            console.log("this is NOT from tags ");
+            console.log(i)
             var wordIndex = 0;
             sentenceIndex = sentences.indexOf(i);
             sentence += "<p>";
@@ -202,11 +233,57 @@
         }
         para.innerHTML = sentence;
     }
+    function blocker(tag){
+        console.log(tag+"this is the tag")
+        var x = document.getElementById(tag);
+        if (x.style.display === "none") {
+            x.style.display = "block";
+        } else {
+            x.style.display = "none";
+        }
+    }
+    function printSentenceInTags(dict, word) {
+        var finalOut='';
+        console.log("dict");
+        // console.log(dict[0]);
+        // console.log(value);
+        Object.keys(dict).forEach(function(key) {
+            var tag=dict[key];
+            finalOut+='<button onclick="blocker(&quot;'+key+'&quot;)">'+key+'</button><div id='+key+'>'
+            var sentence = '';
+            var sentenceIndex = 0;
+            for (var ii=0; ii<tag.length ;ii++ ){
+                var wordIndex = 0;
+                sentenceIndex = ii;
+                var i=tag[ii];
+                sentence += "<p>";
+                for (var j of i) {
+                    if (j.word == word) {
+                        // console.log("word has detected")
+                        sentence += "<div class='tooltip'>" +"<mark data-tag='" + j.tag + "' data-sentenceIndex=" + sentenceIndex + " data-wordIndex=" + wordIndex + ">" + j.word + "</mark> "+ "&nbsp;"+ "<span class='tooltiptext'>" + j.tag + "</span> </div>";
+                        wordIndex++;
+                    } else {
+                        // console.log("word has detected else")
+                        sentence += "<div class='tooltip'>" + j.word + "&nbsp;" + "<span class='tooltiptext'>" + j.tag + "</span> </div>";
+                        wordIndex++;
+                    }
+                }
+                sentence += "</p><br>";
+                finalOut+=sentence;
+            }
+            finalOut+='</div>'
+            // console.log("end of a tag");
+            // console.log(finalOut);
+        });
+        para.innerHTML = finalOut;
+        
+    }
     // function showTag(a) {
     //     console.log(a);
     //     var m = window.getSelection.focusNode.parentElement;
     //     console.log(m.dataset.tag);
     // }
+    
     function getSelectedText() {
         var list = [];
         if (typeof window.getSelection != "undefined") {
