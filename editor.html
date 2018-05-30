@@ -249,7 +249,7 @@
         // console.log(value);
         Object.keys(dict).forEach(function(key) {
             var tag=dict[key];
-            finalOut+='<button onclick="blocker(&quot;'+key+'&quot;)">'+key+'</button><div id='+key+'>'
+            finalOut+='<button onclick="blocker(&quot;'+key+'&quot;)">'+key+'</button><br/><div id='+key+' style="display: none;">'
             var sentence = '';
             var sentenceIndex = 0;
             for (var ii=0; ii<tag.length ;ii++ ){
