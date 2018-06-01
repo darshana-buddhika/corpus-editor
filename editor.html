@@ -212,7 +212,7 @@
 
         var sentence = '';
         var sentenceIndex = 0;
-        for (var i of list) {
+        for (var i of list) {printSentenceInTags
             console.log("this is NOT from tags ");
             console.log(i)
             var wordIndex = 0;
@@ -329,8 +329,10 @@
 	                    var wordText = sentences[sentenceIndex][wordIndex].word;
 	                   	// console.log(wordText);
 	                    // newTagElement.setAttribute('data-tag',newTag);			//Failed
-		            	var result = findWord(wordText);
-		                printSentence(result, wordText);
+		            	// var result = findWord(wordText);
+		             //    printSentence(result, wordText);
+		                var resultByTags = findWordByTag(wordText);
+		                printSentenceInTags(resultByTags,wordText);
 	                }else {
 
 	                }
