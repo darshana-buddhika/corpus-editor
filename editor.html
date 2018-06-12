@@ -280,7 +280,7 @@
 
         var sentence = '';
         var sentenceIndex = 0;
-        for (var i of list) {
+        for (var i of list) {printSentenceInTags
             console.log("this is NOT from tags ");
             console.log(i)
             var wordIndex = 0;
@@ -387,6 +387,7 @@
         var wordIndex = newTagElement.getAttribute('data-wordIndex');
         var sentenceIndex = newTagElement.getAttribute('data-sentenceIndex');
 
+
         if (wordIndex && sentenceIndex) {
             if (newTag) {
                 var confirm = window.confirm("Are sure want to chnage tag");
@@ -410,6 +411,7 @@
         } else {
             error.innerText = "Please select a word to chnage tag";
         }
+
     }
 
     function changeAllTags() {
