@@ -45,6 +45,7 @@
             text-indent: 5px;
         }
 
+
         .float-right {
             float: right;
             margin-right: 10rem;
@@ -67,6 +68,7 @@
             background: rgba(114, 113, 113, 0.781);
             color: #333;
         }
+
 
         p {
             font-size: 13px;
@@ -212,6 +214,7 @@
             var result = findWord(w);
             // var tagResult = findWordByTag(w);
             var tagResult = sortSentenceByTag(w);
+
             // console.log("this is the sorted results");
             // console.log(tagResult);
             if (result.length != 0) {
@@ -282,6 +285,7 @@
         // console.log(array.indexOf(tag))
         // console.log(array.indexOf(tag) > -1)
         return array.indexOf(tag) > -1;
+
     }
 
     function sortSentenceByTag(searchText) {
@@ -449,6 +453,7 @@
                     var tagResult = sortSentenceByTag(wordText);
 
                     printSentenceInTags(tagResult, wordText);
+
                 } else {
 
                 }
@@ -492,6 +497,7 @@
                     var tagResult = sortSentenceByTag(wordText);
 
                     printSentenceInTags(tagResult, wordText);
+
                 } else {
 
                 }
