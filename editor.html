@@ -12,20 +12,76 @@
             margin: 0;
             box-sizing: border-box;
             text-decoration: none;
+            font-family: Arial, Helvetica, sans-serif;
         }
-        div {
-            word-break: break-all;
+
+        #header {
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+            height: 210px;
         }
+
+        #upload-button {
+            border: 1px solid rgba(180, 180, 180, 0.753);
+            border-radius: 50px;
+            padding: 0.6rem;
+            background: whitesmoke;
+            transition: background 500ms ease;
+        }
+
+        #upload-button:hover {
+            background: rgba(201, 199, 199, 0.781);
+            color: #333;
+        }
+
+        #upload-text {
+            font-size: .9rem;
+            font-weight: 500;
+        }
+
+        #newTag {
+            text-indent: 5px;
+        }
+
+        .float-right {
+            float: right;
+            margin-right: 10rem;
+        }
+
+        .colapsbutton {
+            width: 100%;
+            border: none;
+            padding: 10px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            transition: background 500ms ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15), 0 3px 5px rgba(0, 0, 0, 0.25);
+
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 20px;
+        }
+
+        .colapsbutton:hover {
+            background: rgba(114, 113, 113, 0.781);
+            color: #333;
+        }
+
         p {
             font-size: 13px;
         }
+
         input[type="file"] {
             padding: 10px;
             border: 1px solid lightcyan;
         }
+
         .search {
             padding: 20px;
+            background: #fff;
         }
+
         #search {
             border: 1px lightblue solid;
             margin: 0;
@@ -35,41 +91,49 @@
             font-size: 15px;
             /* display: inline-flex; */
         }
+
         .tag {
             padding: 20px;
-            position: fixed;
+            /* position: fixed; */
             width: 100%;
             background: lightblue;
         }
+
         .tag-wrapper {
-		    height: 100%;
-		    padding-bottom: 7%;
-		}
-		/* Tooltip container */
-		.tooltip {
-		    /*position: relative;*/
-		    display: inline-block;
-		    /*border-bottom: 1px dotted black;  //If you want dots under the hoverable text */
-		}
-		/* Tooltip text */
-		.tooltip .tooltiptext {
-		    visibility: hidden;
-		    width: 120px;
-		    background-color: rgba(0,0,0,0.7);
-		    color: #fff;
-		    text-align: center;
-		    padding: 5px 0;
-		    border-radius: 6px;
-            box-shadow: 0 0 2px rgba(0,0,0,0.2), 0 0 4px rgba(0,0,0,0.15);
-		 
-		    /* Position the tooltip text - see examples below! */
-		    position: absolute;
-		    z-index: 1;
-		}
-		/* Show the tooltip text when you mouse over the tooltip container */
-		.tooltip:hover .tooltiptext {
-		    visibility: visible;
-		}
+            /* height: 100%; */
+            /* padding-bottom: 7%; */
+        }
+
+        /* Tooltip container */
+
+        .tooltip {
+            /*position: relative;*/
+            display: inline-block;
+            /*border-bottom: 1px dotted black;  //If you want dots under the hoverable text */
+        }
+
+        /* Tooltip text */
+
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            /* width: 120px; */
+            background-color: rgba(0, 0, 0, 0.7);
+            color: #fff;
+            text-align: center;
+            padding: 5px 0;
+            border-radius: 6px;
+            box-shadow: 0 0 2px rgba(0, 0, 0, 0.2), 0 0 4px rgba(0, 0, 0, 0.15);
+
+            /* Position the tooltip text - see examples below! */
+            position: absolute;
+            z-index: 1;
+        }
+
+        /* Show the tooltip text when you mouse over the tooltip container */
+
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+        }
 
         #searchBtn {
             padding: 10px;
@@ -77,45 +141,53 @@
             outline: none;
             transition: 0.2s ease-in;
         }
+
         #searchBtn:hover {
             box-shadow: 0 1px 6px rgba(0, 0, 0, 0.25), 0 2px 8px rgba(0, 0, 0, 0.15);
         }
+
         #a {
-            margin-top: 80px;
+            margin-top: 210px;
+            padding: 1rem 5rem;
         }
     </style>
 </head>
 
 <body>
+    <div id="header">
+        <div class="search">
+            <input type="file" name="textFile" id="upload-file" hidden="hidden">
+            <button id="upload-button">Upload Corpus</button>
+            <span id="upload-text">No File Selected</span>
+            <div class="float-right">
+                <input type="text" placeholder="Enter word here" id="search">
+                <button id="searchBtn" autofocus>Search</button>
+            </div>
 
-    <div class="search">
-        <input type="file" name="textFile" id="file" style="height: 50px; width: 400px; display: inline;
-    float: none;">
 
-        <input type="text" placeholder="Enter word here" id="search">
-        <button id="searchBtn" autofocus>Search</button>
+        </div>
 
-        <button onclick="saveFile()" style="height: 35px; width: 150px">Commit Changes</button>
-        <a download="corpus.txt" id="downloadlink" style="display: none">Download</a>
+        <hr>
+        <div class="tag-wrapper">
+            <div class="tag">
+                <h3 id="command">Select a highlited text to set the tag</h3>
+                <!-- <button id="getTag">click here</button> -->
+                <p id="tag"></p>
+                <h2 id="error" style="color: red"></h2>
 
+                <div class="row">
+                    <input type="text" id="newTag" data-wordIndex="" data-sentenceIndex="" style="height: 35px;" placeholder="Enter the new Tag">
+                    <button id="changeTagBtn" onclick="changeTag()" style="height: 35px; width: 150px">Change Tag</button>
+                    <button id="changeAllTagBtn" onclick="changeAllTags()" style="height: 35px; width: 150px">Change All Tags</button>
+                    <div class="float-right">
+                        <button onclick="saveFile()" style="height: 35px; width: 150px">Save Changes</button>
+                        <a download="corpus.txt" id="downloadlink" style="display: none">Download</a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
     </div>
-
-    <hr>
-    <dir class="tag-wrapper">
-	    <div class="tag">
-	        <h3 id="command">Select a highlited text to set the tag</h3>
-	        <!-- <button id="getTag">click here</button> -->
-	        <p id="tag"></p>
-	        <h2 id="error" style="color: red"></h2>
-
-			<div class="row">
-				 <input type="text" id="newTag" data-wordIndex="" data-sentenceIndex="" style="height: 35px;" placeholder="Enter the new Tag">
-	        	<button id="changeTagBtn" onclick="changeTag()" style="height: 35px; width: 150px">Change Tag</button>
-	        	<button id="changeAllTagBtn" onclick="changeAllTags()" style="height: 35px; width: 150px">Change All Tags</button>
-
-			</div>
-	    </div>
-	</dir>
     <div id="a"></div>
 
 </body>
@@ -129,27 +201,40 @@
 
     var command = document.getElementById('command');
 
+    const upload_file = document.getElementById('upload-file');
+    const upload_button = document.getElementById('upload-button');
+    const upload_text = document.getElementById('upload-text');
+
     document.getElementById('searchBtn').addEventListener('click', function () {
         var w = document.getElementById('search').value.trim();
         error.innerText = "";
         if (w) {
             var result = findWord(w);
-            var tagResult =findWordByTag(w);
+            // var tagResult = findWordByTag(w);
+            var tagResult = sortSentenceByTag(w);
             // console.log("this is the sorted results");
             // console.log(tagResult);
             if (result.length != 0) {
                 // printSentence(result, w);
-                printSentenceInTags(tagResult,w);
+                printSentenceInTags(tagResult, w);
             } else {
-                error.innerText = "Couldent find the word u searched";
+                error.innerText = "Couldn't find the word you searched";
             }
         } else {
             error.innerText = "Please Enter a Word in search box";
         }
     })
-    document.getElementById('file').addEventListener('change', function () {
+
+    // When click upload button call file upload input feild
+    upload_button.addEventListener('click', function () {
+        upload_file.click();
+    });
+
+    // File input feild click event listener
+    upload_file.addEventListener('change', function () {
         var fr = new FileReader();
-        fr.onload = function () {
+        fr.onload = function (files) {
+            console.log(files)
             var text = this.result;
             var sentence = [];
             var line = text.split("\n");
@@ -169,9 +254,15 @@
                 }
             }
             sentences.push(sentence);  // if the corpus does not end with fullstop
+
+            upload_text.innerText = "File has uploaded";
         }
         fr.readAsText(this.files[0], "UFT-8");
+
+
     })
+
+    // find a word from the sentences list
     function findWord(word) {
         var sen = [];
         for (var a of sentences) {
@@ -183,36 +274,57 @@
             }
         }
         return sen;
-        
+
     }
-    function findWordByTag(word) {
+    function isInArray(array, tag) {
+        // console.log(array)
+        // console.log(tag)
+        // console.log(array.indexOf(tag))
+        // console.log(array.indexOf(tag) > -1)
+        return array.indexOf(tag) > -1;
+    }
+
+    function sortSentenceByTag(searchText) {
         var sorted = {};
-        for (var a of sentences) {
-            for (var w of a) {
-                if (w.word == word) {
-                    let tag=w.tag;
+        for (var sentence of sentences) {
+            console.log("new sentence")
+            var tag = [];
+            // console.log(tag)
+            for (var word of sentence) {
+                if (word.word == searchText) {
+                    // tag.push(word.tag);
                     //sen.push(a);
-                    if((w.tag in sorted)){
-                        //tag exists
-                        sorted[tag].push(a);
+                    if ((word.tag in sorted)) {
+                        tagin = isInArray(tag, word.tag);
+                        // console.log(tagin)
+                        if (tagin == false) {      // check if the sentence is already enterd under the tag
+                            sorted[word.tag].push(sentence);
+                            // console.log(sorted[word.tag])
+                            tag.push(word.tag)
+                            // console.log("insde if")
+                        }
                     }
                     //tag is not there
-                    else{
-                        sorted[tag]=[a];     
+                    else {
+                        sorted[word.tag] = [sentence];
+                        tag.push(word.tag)
                     }
 
-                        
-                    break;
+
+
+                    // break;
                 }
             }
         }
+        // console.log(Object.keys(sorted))
         return sorted;
     }
     function printSentence(list, word) {
 
         var sentence = '';
         var sentenceIndex = 0;
-        for (var i of list) {printSentenceInTags
+        for (var i of list) {
+            printSentenceInTags
             console.log("this is NOT from tags ");
             console.log(i)
             var wordIndex = 0;
@@ -221,7 +333,7 @@
             for (var j of i) {
                 if (j.word == word) {
                     // console.log("word has detected")
-                    sentence += "<div class='tooltip'>" +"<mark data-tag='" + j.tag + "' data-sentenceIndex=" + sentenceIndex + " data-wordIndex=" + wordIndex + ">" + j.word + "</mark> "+ "&nbsp;"+ "<span class='tooltiptext'>" + j.tag + "</span> </div>";
+                    sentence += "<div class='tooltip'>" + "<mark data-tag='" + j.tag + "' data-sentenceIndex=" + sentenceIndex + " data-wordIndex=" + wordIndex + ">" + j.word + "</mark> " + "&nbsp;" + "<span class='tooltiptext'>" + j.tag + "</span> </div>";
                     wordIndex++;
                 } else {
                     // console.log("word has detected else")
@@ -233,8 +345,8 @@
         }
         para.innerHTML = sentence;
     }
-    function blocker(tag){
-        console.log(tag+"this is the tag")
+    function blocker(tag) {
+        console.log(tag + "this is the tag")
         var x = document.getElementById(tag);
         if (x.style.display === "none") {
             x.style.display = "block";
@@ -243,24 +355,28 @@
         }
     }
     function printSentenceInTags(dict, word) {
-        var finalOut='';
-        console.log("dict");
-        // console.log(dict[0]);
-        // console.log(value);
-        Object.keys(dict).forEach(function(key) {
-            var tag=dict[key];
-            finalOut+='<button onclick="blocker(&quot;'+key+'&quot;)">'+key+'</button><br/><div id='+key+' style="display: none;">'
-            var sentence = '';
+        var finalOut = '';
+        // console.log(dict);
+
+        Object.keys(dict).forEach(function (key) {
+            var tag = dict[key];
+            console.log(dict[key])
+            finalOut += '<button class="colapsbutton" onclick="blocker(&quot;' + key + '&quot;)">' + key + '</button><br/><div id=' + key + ' style="display: none;">'
+
             var sentenceIndex = 0;
-            for (var ii=0; ii<tag.length ;ii++ ){
+            for (var ii = 0; ii < tag.length; ii++) {
                 var wordIndex = 0;
-                sentenceIndex = ii;
-                var i=tag[ii];
+                var sentence = '';
+                var i = tag[ii];
+                console.log(i)
+                sentenceIndex = sentences.indexOf(i);
                 sentence += "<p>";
                 for (var j of i) {
-                    if (j.word == word) {
+                    // console.log(j.tag)
+                    // console.log(key)
+                    if (j.word == word && j.tag == key) {
                         // console.log("word has detected")
-                        sentence += "<div class='tooltip'>" +"<mark data-tag='" + j.tag + "' data-sentenceIndex=" + sentenceIndex + " data-wordIndex=" + wordIndex + ">" + j.word + "</mark> "+ "&nbsp;"+ "<span class='tooltiptext'>" + j.tag + "</span> </div>";
+                        sentence += "<div class='tooltip'>" + "<mark data-tag='" + j.tag + "' data-sentenceIndex=" + sentenceIndex + " data-wordIndex=" + wordIndex + ">" + j.word + "</mark> " + "&nbsp;" + "<span class='tooltiptext'>" + j.tag + "</span> </div>";
                         wordIndex++;
                     } else {
                         // console.log("word has detected else")
@@ -269,21 +385,21 @@
                     }
                 }
                 sentence += "</p><br>";
-                finalOut+=sentence;
+                finalOut += sentence;
             }
-            finalOut+='</div>'
+            finalOut += '</div>'
             // console.log("end of a tag");
             // console.log(finalOut);
         });
         para.innerHTML = finalOut;
-        
+
     }
     // function showTag(a) {
     //     console.log(a);
     //     var m = window.getSelection.focusNode.parentElement;
     //     console.log(m.dataset.tag);
     // }
-    
+
     function getSelectedText() {
         var list = [];
         if (typeof window.getSelection != "undefined") {
@@ -297,7 +413,7 @@
         return list;
     }
     function doSomethingWithSelectedText() {
-        
+
         var dd = document.getElementById('newTag');
         var selectedText = getSelectedText();
         if (selectedText[0]) {
@@ -306,7 +422,7 @@
             // tag.innerText = selectedText[0];
             command.innerText = "Enter the Tag you want to replace.."
             error.innerText = "";
-        }else {
+        } else {
             command.innerText = "Select a highlited text to set the tag";
         }
     }
@@ -315,79 +431,81 @@
     function changeTag() {
         error.innerText = "";
         var newTagElement = document.getElementById('newTag');
-        var newTag = newTagElement.value;
+        var newTag = newTagElement.value.toUpperCase();
         var wordIndex = newTagElement.getAttribute('data-wordIndex');
         var sentenceIndex = newTagElement.getAttribute('data-sentenceIndex');
 
-        	 if (wordIndex && sentenceIndex) {
-	            if (newTag) {
-	                var confirm = window.confirm("Are sure want to chnage tag");
-	                if(confirm){
-	                    sentences[sentenceIndex][wordIndex].tag = newTag;
-	                    error.innerText = "tag changed successfull";
-	                    error.style.color = 'blue';
-	                    var wordText = sentences[sentenceIndex][wordIndex].word;
-	                   	// console.log(wordText);
-	                    // newTagElement.setAttribute('data-tag',newTag);			//Failed
-		            	// var result = findWord(wordText);
-		             //    printSentence(result, wordText);
-		                var resultByTags = findWordByTag(wordText);
-		                printSentenceInTags(resultByTags,wordText);
-	                }else {
 
-	                }
-	                
+        if (wordIndex && sentenceIndex) {
+            if (newTag) {
+                var confirm = window.confirm("Are sure want to chnage tag");
+                if (confirm) {
+                    sentences[sentenceIndex][wordIndex].tag = newTag;
+                    error.innerText = "tag changed successfull";
+                    error.style.color = 'blue';
+                    var wordText = sentences[sentenceIndex][wordIndex].word;
+                    // console.log(wordText);
+                    // newTagElement.setAttribute('data-tag',newTag);			//Failed
+                    var tagResult = sortSentenceByTag(wordText);
 
-	            } else {
-	                error.innerText = "Please enter a new tag";
-	            }
-	        } else {
-	            error.innerText = "Please select a word to chnage tag";
-	        }
+                    printSentenceInTags(tagResult, wordText);
+                } else {
+
+                }
+
+
+            } else {
+                error.innerText = "Please enter a new tag";
+            }
+        } else {
+            error.innerText = "Please select a word to chnage tag";
+        }
+
     }
 
-    function changeAllTags(){
+    function changeAllTags() {
         error.innerText = "";
 
         var newTagElement = document.getElementById('newTag');
-        var newTag = newTagElement.value;
+        var newTag = newTagElement.value.toUpperCase();
         var wordIndex = newTagElement.getAttribute('data-wordIndex');
         var sentenceIndex = newTagElement.getAttribute('data-sentenceIndex');
 
-    	    if (wordIndex && sentenceIndex) {
-	            if (newTag) {
-	                var confirm = window.confirm("Are sure want to chnage tags for All the Words !");
-	                if(confirm){
-	                    var oldTag = sentences[sentenceIndex][wordIndex].tag;
-	                    var wordText = sentences[sentenceIndex][wordIndex].word;
-	                    for(var sentence of sentences){
-	                    	for(var wordObj of sentence){
+        if (wordIndex && sentenceIndex) {
+            if (newTag) {
+                var confirm = window.confirm("Are sure want to chnage tags for All the Words !");
+                if (confirm) {
+                    var oldTag = sentences[sentenceIndex][wordIndex].tag;
+                    var wordText = sentences[sentenceIndex][wordIndex].word;
+                    for (var sentence of sentences) {
+                        for (var wordObj of sentence) {
 
-									if(wordObj.word == wordText){
-										if(wordObj.tag == oldTag){
-											wordObj.tag = newTag;
-										}
-									}         
-	                    	}
-	                    }
-						error.innerText = "tag changed successfull";
-	                    error.style.color = 'blue';
-		            	var result = findWord(wordText);
-		                printSentence(result, wordText);
-	                }else {
+                            if (wordObj.word == wordText) {
+                                if (wordObj.tag == oldTag) {
+                                    wordObj.tag = newTag;
+                                }
+                            }
+                        }
+                    }
+                    error.innerText = "tag changed successfull";
+                    error.style.color = 'blue';
+                    var tagResult = sortSentenceByTag(wordText);
 
-	                }
-	                
+                    printSentenceInTags(tagResult, wordText);
+                } else {
 
-	            } else {
-	                error.innerText = "Please enter a new tag";
-	            }
-	        } else {
-	            error.innerText = "Please select a word to chnage tag";
-	        }
-              
+                }
+
+
+            } else {
+                error.innerText = "Please enter a new tag";
+            }
+        } else {
+            error.innerText = "Please select a word to chnage tag";
+        }
+
     }
-   
+
     function createText() {
         var text = "";
         for (var a of sentences) {
