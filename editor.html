@@ -176,7 +176,13 @@
                 <h2 id="error" style="color: red"></h2>
 
                 <div class="row">
-                    <input type="text" id="newTag" data-wordIndex="" data-sentenceIndex="" style="height: 35px;" placeholder="Enter the new Tag">
+<!--                     <input type="text" id="newTag" data-wordIndex="" data-sentenceIndex="" style="height: 35px;" placeholder="Enter the new Tag">
+ -->				<select type="text" id="newTag" data-wordIndex="" data-sentenceIndex="" style="height: 35px; width:150px; margin-right: 80px">
+					  <option value="#">Select a tag</option>
+					  <option value="saab">Saab</option>
+					  <option value="mercedes">Mercedes</option>
+					  <option value="audi">Audi</option>
+					</select> 
                     <button id="changeTagBtn" onclick="changeTag()" style="height: 35px; width: 150px">Change Tag</button>
                     <button id="changeAllTagBtn" onclick="changeAllTags()" style="height: 35px; width: 150px">Change All Tags</button>
                     <div class="float-right">
@@ -234,7 +240,7 @@
     upload_file.addEventListener('change', function () {
         var fr = new FileReader();
         fr.onload = function (files) {
-            console.log(files)
+            // console.log(files)
             var text = this.result;
             var sentence = [];
             var line = text.split("\n");
@@ -250,6 +256,9 @@
                 } else {
                     wr.word = w[0];
                     wr.tag = w[1];
+                    if(!wr.tag){
+                    	wr.tag = "TagUndefined"
+                    }
                     sentence.push(wr);
                 }
             }
@@ -326,7 +335,7 @@
         for (var i of list) {
             printSentenceInTags
             console.log("this is NOT from tags ");
-            console.log(i)
+            // console.log(i)
             var wordIndex = 0;
             sentenceIndex = sentences.indexOf(i);
             sentence += "<p>";
@@ -420,7 +429,7 @@
             dd.setAttribute('data-wordIndex', selectedText[1]);
             dd.setAttribute('data-sentenceIndex', selectedText[2]);
             // tag.innerText = selectedText[0];
-            command.innerText = "Enter the Tag you want to replace.."
+            command.innerText = "Select the Tag you want to replace.."
             error.innerText = "";
         } else {
             command.innerText = "Select a highlited text to set the tag";
@@ -435,9 +444,8 @@
         var wordIndex = newTagElement.getAttribute('data-wordIndex');
         var sentenceIndex = newTagElement.getAttribute('data-sentenceIndex');
 
-
         if (wordIndex && sentenceIndex) {
-            if (newTag) {
+            if (newTag && newTag !== "#") {
                 var confirm = window.confirm("Are sure want to chnage tag");
                 if (confirm) {
                     sentences[sentenceIndex][wordIndex].tag = newTag;
@@ -449,13 +457,15 @@
                     var tagResult = sortSentenceByTag(wordText);
 
                     printSentenceInTags(tagResult, wordText);
+                    newTagElement.value = "#";
+
                 } else {
 
                 }
 
 
             } else {
-                error.innerText = "Please enter a new tag";
+                error.innerText = "Please Select a new tag";
             }
         } else {
             error.innerText = "Please select a word to chnage tag";
@@ -472,7 +482,7 @@
         var sentenceIndex = newTagElement.getAttribute('data-sentenceIndex');
 
         if (wordIndex && sentenceIndex) {
-            if (newTag) {
+            if (newTag && newTag !== "#") {
                 var confirm = window.confirm("Are sure want to chnage tags for All the Words !");
                 if (confirm) {
                     var oldTag = sentences[sentenceIndex][wordIndex].tag;
@@ -488,6 +498,7 @@
                         }
                     }
                     error.innerText = "tag changed successfull";
+                    newTagElement.value = "#";
                     error.style.color = 'blue';
 
                     // update the sentence list
