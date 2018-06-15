@@ -135,14 +135,14 @@
             visibility: visible;
         }
 
-        #searchBtn {
+        .searchBtn {
             padding: 10px;
             border: 1px solid lightgray;
             outline: none;
             transition: 0.2s ease-in;
         }
 
-        #searchBtn:hover {
+        .searchBtn:hover {
             box-shadow: 0 1px 6px rgba(0, 0, 0, 0.25), 0 2px 8px rgba(0, 0, 0, 0.15);
         }
 
@@ -160,8 +160,10 @@
             <button id="upload-button">Upload Corpus</button>
             <span id="upload-text">No File Selected</span>
             <div class="float-right">
-                <input type="text" placeholder="Enter word here" id="search">
-                <button id="searchBtn" autofocus>Search</button>
+                <input type="text" placeholder="Enter Word or Tag here..." id="search">
+                <button class="searchBtn" id="searchBtn" autofocus>Word Search</button>
+                <!-- <input type="text" placeholder="Enter word here" id="search"> -->
+                <button class="searchBtn" id="wordSearchBtn">TTag Search</button>
             </div>
 
 
@@ -176,13 +178,14 @@
                 <h2 id="error" style="color: red"></h2>
 
                 <div class="row">
-<!--                     <input type="text" id="newTag" data-wordIndex="" data-sentenceIndex="" style="height: 35px;" placeholder="Enter the new Tag">
- -->				<select type="text" id="newTag" data-wordIndex="" data-sentenceIndex="" style="height: 35px; width:150px; margin-right: 80px">
-					  <option value="#">Select a tag</option>
-					  <option value="saab">Saab</option>
-					  <option value="mercedes">Mercedes</option>
-					  <option value="audi">Audi</option>
-					</select> 
+                    <!--                     <input type="text" id="newTag" data-wordIndex="" data-sentenceIndex="" style="height: 35px;" placeholder="Enter the new Tag">
+ -->
+                    <select type="text" id="newTag" data-wordIndex="" data-sentenceIndex="" style="height: 35px; width:150px; margin-right: 80px">
+                        <option value="#">Select a tag</option>
+                        <option value="saab">Saab</option>
+                        <option value="mercedes">Mercedes</option>
+                        <option value="audi">Audi</option>
+                    </select>
                     <button id="changeTagBtn" onclick="changeTag()" style="height: 35px; width: 150px">Change Tag</button>
                     <button id="changeAllTagBtn" onclick="changeAllTags()" style="height: 35px; width: 150px">Change All Tags</button>
                     <div class="float-right">
@@ -210,6 +213,26 @@
     const upload_file = document.getElementById('upload-file');
     const upload_button = document.getElementById('upload-button');
     const upload_text = document.getElementById('upload-text');
+
+    document.getElementById('wordSearchBtn').addEventListener('click', function () {
+        var tag = document.getElementById('search').value.trim().toUpperCase();
+        error.innerText = "";
+        if (tag) {
+            // var result = findWord(w);
+            // var tagResult = findWordByTag(w);
+            var tagResult = sortSentenceByWord(tag);
+            // console.log("this is the sorted results");
+            // console.log(tagResult);
+            if (tagResult) {
+                // printSentence(result, w);
+                printSentenceInWords(tagResult, tag);
+            } else {
+                error.innerText = "Couldn't find the word you searched";
+            }
+        } else {
+            error.innerText = "Please Enter a Word in search box";
+        }
+    })
 
     document.getElementById('searchBtn').addEventListener('click', function () {
         var w = document.getElementById('search').value.trim();
@@ -256,8 +279,8 @@
                 } else {
                     wr.word = w[0];
                     wr.tag = w[1];
-                    if(!wr.tag){
-                    	wr.tag = "TagUndefined"
+                    if (!wr.tag) {
+                        wr.tag = "TagUndefined"
                     }
                     sentence.push(wr);
                 }
@@ -285,11 +308,9 @@
         return sen;
 
     }
+
+    // check tag element is in the array or not
     function isInArray(array, tag) {
-        // console.log(array)
-        // console.log(tag)
-        // console.log(array.indexOf(tag))
-        // console.log(array.indexOf(tag) > -1)
         return array.indexOf(tag) > -1;
     }
 
@@ -377,7 +398,6 @@
                 var wordIndex = 0;
                 var sentence = '';
                 var i = tag[ii];
-                console.log(i)
                 sentenceIndex = sentences.indexOf(i);
                 sentence += "<p>";
                 for (var j of i) {
@@ -403,11 +423,75 @@
         para.innerHTML = finalOut;
 
     }
-    // function showTag(a) {
-    //     console.log(a);
-    //     var m = window.getSelection.focusNode.parentElement;
-    //     console.log(m.dataset.tag);
-    // }
+
+    function printSentenceInWords(dict, tag) {
+        var finalOut = '';
+        // console.log(dict);
+
+
+        Object.keys(dict).forEach(function (key) {
+            var words = dict[key];
+            console.log(dict[key])
+            finalOut += '<button class="colapsbutton" onclick="blocker(&quot;' + key + '&quot;)">' + key + '</button><br/><div id=' + key + ' style="display: none;">'
+
+            var sentenceIndex = 0;
+            for (var ii = 0; ii < words.length; ii++) {
+                var wordIndex = 0;
+                var sentence = '';
+                var i = words[ii];
+                sentenceIndex = sentences.indexOf(i);
+                sentence += "<p>";
+                for (var j of i) {
+                   
+                    if (j.word == key && j.tag == tag) {
+                        // console.log("word has detected")
+                        sentence += "<div class='tooltip'>" + "<mark data-tag='" + j.tag + "' data-sentenceIndex=" + sentenceIndex + " data-wordIndex=" + wordIndex + ">" + j.word + "</mark> " + "&nbsp;" + "<span class='tooltiptext'>" + j.tag + "</span> </div>";
+                        wordIndex++;
+                    } else {
+                        // console.log("word has detected else")
+                        sentence += "<div class='tooltip'>" + j.word + "&nbsp;" + "<span class='tooltiptext'>" + j.tag + "</span> </div>";
+                        wordIndex++;
+                    }
+                }
+                sentence += "</p><br>";
+                finalOut += sentence;
+            }
+            finalOut += '</div>'
+            // console.log("end of a tag");
+            // console.log(finalOut);
+        });
+        para.innerHTML = finalOut;
+
+    }
+    function sortSentenceByWord(tag) {
+        var sorted = {};
+        for (var sentence of sentences) {
+            var words = [];
+
+            for (var word of sentence) {
+                if (word.tag == tag) {
+
+                    if ((word.word in sorted)) {
+                        tagin = isInArray(words, word.word);
+
+                        if (tagin == false) {      // check if the sentence is already enterd under the wprd
+                            sorted[word.word].push(sentence);
+
+                            words.push(word.word)
+
+                        }
+                    }
+                    //tag is not there
+                    else {
+                        sorted[word.word] = [sentence];
+                        words.push(word.word)
+                    }
+                }
+            }
+        }
+
+        return sorted;
+    }
 
     function getSelectedText() {
         var list = [];
@@ -473,6 +557,7 @@
 
     }
 
+    //change all Tags at once
     function changeAllTags() {
         error.innerText = "";
 
@@ -517,7 +602,7 @@
         }
 
     }
-
+    //create sentences using text array
     function createText() {
         var text = "";
         for (var a of sentences) {
