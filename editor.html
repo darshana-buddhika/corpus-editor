@@ -158,12 +158,11 @@
         <div class="search">
             <input type="file" name="textFile" id="upload-file" hidden="hidden">
             <button id="upload-button">Upload Corpus</button>
-            <span id="upload-text">No File Selected</span>
+            <span id="error" style="color: red; margin-left: 50px">No File Selected</span>
             <div class="float-right">
                 <input type="text" placeholder="Enter Word or Tag here..." id="search">
                 <button class="searchBtn" id="searchBtn" autofocus>Word Search</button>
-                <!-- <input type="text" placeholder="Enter word here" id="search"> -->
-                <button class="searchBtn" id="wordSearchBtn">TTag Search</button>
+                <button class="searchBtn" id="wordSearchBtn">Tag Search</button>
             </div>
 
 
@@ -175,7 +174,7 @@
                 <h3 id="command">Select a highlited text to set the tag</h3>
                 <!-- <button id="getTag">click here</button> -->
                 <p id="tag"></p>
-                <h2 id="error" style="color: red"></h2>
+                <!-- <h2 id="error" style="color: red"></h2> -->
 
                 <div class="row">
                     <!--                     <input type="text" id="newTag" data-wordIndex="" data-sentenceIndex="" style="height: 35px;" placeholder="Enter the new Tag">
@@ -212,44 +211,68 @@
 
     const upload_file = document.getElementById('upload-file');
     const upload_button = document.getElementById('upload-button');
-    const upload_text = document.getElementById('upload-text');
+	
+	/* This function will search for unique words where the given tag is visible */
 
     document.getElementById('wordSearchBtn').addEventListener('click', function () {
         var tag = document.getElementById('search').value.trim().toUpperCase();
         error.innerText = "";
         if (tag) {
-            // var result = findWord(w);
-            // var tagResult = findWordByTag(w);
-            var tagResult = sortSentenceByWord(tag);
-            // console.log("this is the sorted results");
-            // console.log(tagResult);
-            if (tagResult) {
-                // printSentence(result, w);
-                printSentenceInWords(tagResult, tag);
-            } else {
-                error.innerText = "Couldn't find the word you searched";
-            }
+
+            error.style.color = 'blue';
+            error.innerText = "Please wait Searching...";
+            setTimeout(function(){
+            	var wordResult = sortSentenceByWord(tag);
+
+	            if (Object.keys(wordResult).length !== 0) {
+	                error.style.color = 'blue';
+	            	error.innerText = "Please wait Results are loading...";
+	            	setTimeout(function(){
+	            		printSentenceInWords(wordResult, tag);
+		                error.style.color = 'green';
+		            	error.innerText = "Done...";
+	            	},0);
+	               
+	            } else {
+	            	error.style.color = 'red';
+	                error.innerText = "Couldn't find the Tag you searched";
+	            }
+            },0);
+           
         } else {
+        	error.style.color = 'red';
             error.innerText = "Please Enter a Word in search box";
         }
     })
 
+	/* This function will search for tags where the given word is visible */
     document.getElementById('searchBtn').addEventListener('click', function () {
-        var w = document.getElementById('search').value.trim();
+        var word = document.getElementById('search').value.trim();
         error.innerText = "";
-        if (w) {
-            var result = findWord(w);
-            // var tagResult = findWordByTag(w);
-            var tagResult = sortSentenceByTag(w);
-            // console.log("this is the sorted results");
-            // console.log(tagResult);
-            if (result.length != 0) {
-                // printSentence(result, w);
-                printSentenceInTags(tagResult, w);
-            } else {
-                error.innerText = "Couldn't find the word you searched";
-            }
+        if (word) {
+
+            error.style.color = 'blue';
+            error.innerText = "Please wait Searching...";
+            setTimeout(function(){
+            	var tagResult = sortSentenceByTag(word);
+	            if (Object.keys(tagResult).length !== 0) {
+	                // printSentence(result, w);
+					error.style.color = 'blue';
+	            	error.innerText = "Please wait Results are loading...";
+	            	setTimeout(function(){
+	            		printSentenceInTags(tagResult, word);
+		                error.style.color = 'green';
+		            	error.innerText = "Done...";
+	            	},0);
+	                
+	            } else {
+	            	error.style.color = 'red';
+	                error.innerText = "Couldn't find the word you searched";
+	            }
+            },0);
+            
         } else {
+        	error.style.color = 'red';
             error.innerText = "Please Enter a Word in search box";
         }
     })
@@ -284,14 +307,35 @@
                     }
                     sentence.push(wr);
                 }
+           	error.innerText = "File has uploaded";
+            error.style.color = 'green';
             }
             sentences.push(sentence);  // if the corpus does not end with fullstop
 
-            upload_text.innerText = "File has uploaded";
+            error.innerText = "File has uploaded";
+            error.style.color = 'green';
+
         }
         fr.readAsText(this.files[0], "UFT-8");
+         /* Just after the loading search for the ocurences of tag undefined words */   
+        setTimeout(function(){
+        	tag = "TagUndefined";
+        	var wordResult = sortSentenceByWord(tag);
 
-
+            if (Object.keys(wordResult).length !== 0) {
+                error.style.color = 'red';
+            	error.innerText = "Please wait Some errors are loading...";
+            	setTimeout(function(){
+            		printSentenceInWords(wordResult, tag);
+	                error.style.color = 'red';
+	            	error.innerText = "Fix following errors for undefined tags...";
+            	},0);
+               
+            } else {
+            	error.style.color = 'red';
+                error.innerText = "Couldn't find the Tag you searched";
+            }
+        },1000);
     })
 
     // find a word from the sentences list
@@ -317,7 +361,7 @@
     function sortSentenceByTag(searchText) {
         var sorted = {};
         for (var sentence of sentences) {
-            console.log("new sentence")
+            // console.log("new sentence")
             var tag = [];
             // console.log(tag)
             for (var word of sentence) {
@@ -355,7 +399,7 @@
         var sentenceIndex = 0;
         for (var i of list) {
             printSentenceInTags
-            console.log("this is NOT from tags ");
+            // console.log("this is NOT from tags ");
             // console.log(i)
             var wordIndex = 0;
             sentenceIndex = sentences.indexOf(i);
@@ -376,7 +420,7 @@
         para.innerHTML = sentence;
     }
     function blocker(tag) {
-        console.log(tag + "this is the tag")
+        // console.log(tag + "this is the tag")
         var x = document.getElementById(tag);
         if (x.style.display === "none") {
             x.style.display = "block";
@@ -390,7 +434,7 @@
 
         Object.keys(dict).forEach(function (key) {
             var tag = dict[key];
-            console.log(dict[key])
+            // console.log(dict[key])
             finalOut += '<button class="colapsbutton" onclick="blocker(&quot;' + key + '&quot;)">' + key + '</button><br/><div id=' + key + ' style="display: none;">'
 
             var sentenceIndex = 0;
@@ -431,7 +475,7 @@
 
         Object.keys(dict).forEach(function (key) {
             var words = dict[key];
-            console.log(dict[key])
+            // console.log(dict[key])
             finalOut += '<button class="colapsbutton" onclick="blocker(&quot;' + key + '&quot;)">' + key + '</button><br/><div id=' + key + ' style="display: none;">'
 
             var sentenceIndex = 0;
@@ -549,9 +593,11 @@
 
 
             } else {
+            	error.style.color = 'red';
                 error.innerText = "Please Select a new tag";
             }
         } else {
+        	error.style.color = 'red'
             error.innerText = "Please select a word to chnage tag";
         }
 
