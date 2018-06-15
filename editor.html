@@ -303,7 +303,7 @@
                     wr.word = w[0];
                     wr.tag = w[1];
                     if (!wr.tag) {
-                        wr.tag = "TagUndefined"
+                        wr.tag = "TAG_UNDEFINED"
                     }
                     sentence.push(wr);
                 }
@@ -319,7 +319,7 @@
         fr.readAsText(this.files[0], "UFT-8");
          /* Just after the loading search for the ocurences of tag undefined words */   
         setTimeout(function(){
-        	tag = "TagUndefined";
+        	tag = "TAG_UNDEFINED";
         	var wordResult = sortSentenceByWord(tag);
 
             if (Object.keys(wordResult).length !== 0) {
@@ -369,9 +369,8 @@
                     // tag.push(word.tag);
                     //sen.push(a);
                     if ((word.tag in sorted)) {
-                        tagin = isInArray(tag, word.tag);
                         // console.log(tagin)
-                        if (tagin == false) {      // check if the sentence is already enterd under the tag
+                        if (!isInArray(tag, word.tag)) {      // check if the sentence is already enterd under the tag
                             sorted[word.tag].push(sentence);
                             // console.log(sorted[word.tag])
                             tag.push(word.tag)
@@ -513,12 +512,10 @@
             var words = [];
 
             for (var word of sentence) {
-                if (word.tag == tag) {
+                if (word.tag === tag) {
 
                     if ((word.word in sorted)) {
-                        tagin = isInArray(words, word.word);
-
-                        if (tagin == false) {      // check if the sentence is already enterd under the wprd
+                        if (!isInArray(words, word.word)) {      // check if the sentence is already enterd under the wprd
                             sorted[word.word].push(sentence);
 
                             words.push(word.word)
