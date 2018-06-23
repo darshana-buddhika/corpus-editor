@@ -163,6 +163,7 @@
                 <input type="text" placeholder="Enter Word or Tag here..." id="search">
                 <button class="searchBtn" id="searchBtn" autofocus>Word Search</button>
                 <button class="searchBtn" id="wordSearchBtn">Tag Search</button>
+				<button class="searchBtn" id="unqueWordExpBtn">Export Words</button>
             </div>
 
 
@@ -366,7 +367,36 @@
             }
         },1000);
     })
+    document.getElementById('unqueWordExpBtn').addEventListener('click', function () {
+        var uniqueWords = [];
+        var uniqueText = "";
+        error.innerText = "";
+        // if (tag) {
 
+            error.style.color = 'blue';
+            error.innerText = "Please wait Preparing the Unique Words...";
+            setTimeout(function(){
+
+            	for(var sentence of sentences){
+            		for(var word of sentence){
+            			if(uniqueWords.indexOf(word.word)<0){
+            				uniqueWords.push(word.word);
+            				uniqueText += word.word + "\r\n";
+            			}
+            		}
+            	}
+		        var link = document.getElementById('downloadlink');
+		        link.href = makeTextFile(uniqueText);
+		        error.style.color = 'green';
+            	error.innerText = "Unique Words are ready click the download link...";
+		        link.style.display = 'block';
+            },0);
+           
+        // } else {
+        // 	error.style.color = 'red';
+        //     error.innerText = "Please Enter a Word in search box";
+        // }
+    })
     // find a word from the sentences list
     function findWord(word) {
         var sen = [];
