@@ -371,7 +371,7 @@
         var uniqueWords = [];
         var uniqueText = "";
         error.innerText = "";
-        // if (tag) {
+        if (sentences.length > 0) {
 
             error.style.color = 'blue';
             error.innerText = "Please wait Preparing the Unique Words...";
@@ -392,10 +392,10 @@
 		        link.style.display = 'block';
             },0);
            
-        // } else {
-        // 	error.style.color = 'red';
-        //     error.innerText = "Please Enter a Word in search box";
-        // }
+        } else {
+        	error.style.color = 'red';
+            error.innerText = "Select a File first";
+        }
     })
     // find a word from the sentences list
     function findWord(word) {
