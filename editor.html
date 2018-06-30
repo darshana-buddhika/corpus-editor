@@ -160,6 +160,7 @@
             <button id="upload-button">Upload Corpus</button>
             <span id="error" style="color: red; margin-left: 50px">No File Selected</span>
             <div class="float-right">
+            	<button class="searchBtn" id="unqueWordExpBtn">Export Words</button>
                 <input type="text" placeholder="Enter Word to search here..." id="search">
                 <button class="searchBtn" id="searchBtn" autofocus>Word Search</button>
                 <select type="text" id="searchWordsByTag" data-wordIndex="" data-sentenceIndex="" style="height: 35px; width:150px;">
@@ -197,7 +198,6 @@
 						<option value="QUE"> QUE - Questioning Pronouns</option>
                     </select>
                 <button class="searchBtn" id="wordSearchBtn">Tag Search</button>
-				<button class="searchBtn" id="unqueWordExpBtn">Export Words</button>
             </div>
 
 
@@ -215,7 +215,7 @@
                     <!--                     <input type="text" id="newTag" data-wordIndex="" data-sentenceIndex="" style="height: 35px;" placeholder="Enter the new Tag">
  -->
                     <select type="text" id="newTag" data-wordIndex="" data-sentenceIndex="" style="height: 35px; width:150px; margin-right: 80px">
-                        <option value="#">Select a tag to search</option>
+                        <option value="#">Select new tag to set</option>
 						<option value="ABB"> ABB - Abbreviation</option>
 						<option value="AUX"> AUX - Modal Auxiliary</option>
 						<option value="CC"> CC - Conjunction</option>
