@@ -681,7 +681,7 @@
 
         if (wordIndex && sentenceIndex) {
             if (newTag && newTag !== "#") {
-                var confirm = window.confirm("Are sure want to chnage tag");
+                var confirm = window.confirm("Are sure you want to update?");
                 if (confirm) {
                     sentences[sentenceIndex][wordIndex].tag = newTag;
                     error.innerText = "tag changed successfull";
@@ -721,7 +721,7 @@
 
         if (wordIndex && sentenceIndex) {
             if (newTag && newTag !== "#") {
-                var confirm = window.confirm("Are sure want to chnage tags for All the Words !");
+                var confirm = window.confirm("Are sure want to update all tags ?");
                 if (confirm) {
                     var oldTag = sentences[sentenceIndex][wordIndex].tag;
                     var wordText = sentences[sentenceIndex][wordIndex].word;
