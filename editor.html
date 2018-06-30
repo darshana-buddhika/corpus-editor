@@ -160,8 +160,42 @@
             <button id="upload-button">Upload Corpus</button>
             <span id="error" style="color: red; margin-left: 50px">No File Selected</span>
             <div class="float-right">
-                <input type="text" placeholder="Enter Word or Tag here..." id="search">
+                <input type="text" placeholder="Enter Word to search here..." id="search">
                 <button class="searchBtn" id="searchBtn" autofocus>Word Search</button>
+                <select type="text" id="searchWordsByTag" data-wordIndex="" data-sentenceIndex="" style="height: 35px; width:150px;">
+                        <option value="#">Select a tag to search</option>
+						<option value="ABB"> ABB - Abbreviation</option>
+						<option value="AUX"> AUX - Modal Auxiliary</option>
+						<option value="CC"> CC - Conjunction</option>
+						<option value="CM"> CM - Case Marker</option>
+						<option value="DET"> DET - Determiner</option>
+						<option value="FRW"> FRW - Foreign Word</option>
+						<option value="FS"> FS - Fullstop</option>
+						<option value="JCV"> JCV - Adjective in Compound Verb</option>
+						<option value="JJ"> JJ - Adjective</option>
+						<option value="NCV"> NCV - Noun in Compound Verb</option>						
+						<option value="NDT"> NDT - Deterministic Pronoun</option>
+						<option value="NIP"> NIP - Nipathana</option>
+						<option value="NNC"> NNC - Common Noun</option>
+						<option value="NNJ"> NNJ - Adjectival Noun</option>
+						<option value="NNP"> NNP - Proper Noun</option>
+						<option value="NUM"> NUM - Number</option>
+						<option value="NVB"> NVB - Sentence Ending</option>
+						<option value="PCV"> PCV - Preposition in Compound Verb</option>
+						<option value="POST"> POST - Postposition</option>
+						<option value="PRP"> PRP - Pronoun</option>
+						<option value="PUNC"> PUNC - Punctuation</option>
+						<option value="RB"> RB - Adverb</option>
+						<option value="RP"> RP - Particle</option>
+                        <option value="UH"> UH - Interjection</option>						
+						<option value="VNF"> VNF - Finite Verbs</option>
+						<option value="VNF"> VNF - Verb Non Finite</option>
+						<option value="VNN"> VNN - Verbal Noun</option>
+						<option value="VP"> VP - Verb Participle</option>
+						<option value="TAG_UNDEFINED"> TAG_UNDEFINED - Undefined Tags</option>
+						<option value="QBE"> QBE - Question Based Pronouns</option>
+						<option value="QUE"> QUE - Questioning Pronouns</option>
+                    </select>
                 <button class="searchBtn" id="wordSearchBtn">Tag Search</button>
 				<button class="searchBtn" id="unqueWordExpBtn">Export Words</button>
             </div>
@@ -181,38 +215,38 @@
                     <!--                     <input type="text" id="newTag" data-wordIndex="" data-sentenceIndex="" style="height: 35px;" placeholder="Enter the new Tag">
  -->
                     <select type="text" id="newTag" data-wordIndex="" data-sentenceIndex="" style="height: 35px; width:150px; margin-right: 80px">
-                        <option value="#">Select a tag</option>
+                        <option value="#">Select a tag to search</option>
 						<option value="ABB"> ABB - Abbreviation</option>
-						<option value="NNJ"> NNJ - Adjectival Noun</option>
-						<option value="JJ"> JJ - Adjective</option>
-						<option value="JCV"> JCV - Adjective in Compound Verb</option>
-						<option value="RB"> RB - Adverb</option>
-						<option value="CM"> CM - Case Marker</option>
-                        <option value="NNC"> NNC - Common Noun</option>
+						<option value="AUX"> AUX - Modal Auxiliary</option>
 						<option value="CC"> CC - Conjunction</option>
+						<option value="CM"> CM - Case Marker</option>
 						<option value="DET"> DET - Determiner</option>
-						<option value="NDT"> NDT - Deterministic Pronoun</option>
-						<option value="VNF"> VNF - Finite Verbs</option>
 						<option value="FRW"> FRW - Foreign Word</option>
 						<option value="FS"> FS - Fullstop</option>
-						<option value="UH"> UH - Interjection</option>
-						<option value="AUX"> AUX - Modal Auxiliary</option>
+						<option value="JCV"> JCV - Adjective in Compound Verb</option>
+						<option value="JJ"> JJ - Adjective</option>
+						<option value="NCV"> NCV - Noun in Compound Verb</option>						
+						<option value="NDT"> NDT - Deterministic Pronoun</option>
 						<option value="NIP"> NIP - Nipathana</option>
-						<option value="NCV"> NCV - Noun in Compound Verb</option>
-						<option value="NUM"> NUM - Number</option>
-						<option value="RP"> RP - Particle</option>
-						<option value="POST"> POST - Postposition</option>
-						<option value="PCV"> PCV - Preposition in Compound Verb</option>
-						<option value="PRP"> PRP - Pronoun</option>
+						<option value="NNC"> NNC - Common Noun</option>
+						<option value="NNJ"> NNJ - Adjectival Noun</option>
 						<option value="NNP"> NNP - Proper Noun</option>
-						<option value="PUNC"> PUNC - Punctuation</option>
-						<option value="VP"> VP - Verb Participle</option>
-						<option value="VNN"> VNN - Verbal Noun</option>
-						<option value="VNF"> VNF - Verb Non Finite</option>
+						<option value="NUM"> NUM - Number</option>
 						<option value="NVB"> NVB - Sentence Ending</option>
-						<option value="QUE"> QUE - Questioning Pronouns</option>
-						<option value="QBE"> QBE - Question Based Pronouns</option>
+						<option value="PCV"> PCV - Preposition in Compound Verb</option>
+						<option value="POST"> POST - Postposition</option>
+						<option value="PRP"> PRP - Pronoun</option>
+						<option value="PUNC"> PUNC - Punctuation</option>
+						<option value="RB"> RB - Adverb</option>
+						<option value="RP"> RP - Particle</option>
+                        <option value="UH"> UH - Interjection</option>						
+						<option value="VNF"> VNF - Finite Verbs</option>
+						<option value="VNF"> VNF - Verb Non Finite</option>
+						<option value="VNN"> VNN - Verbal Noun</option>
+						<option value="VP"> VP - Verb Participle</option>
 						<option value="TAG_UNDEFINED"> TAG_UNDEFINED - Undefined Tags</option>
+						<option value="QBE"> QBE - Question Based Pronouns</option>
+						<option value="QUE"> QUE - Questioning Pronouns</option>
 
                     </select>
                     <button id="changeTagBtn" onclick="changeTag()" style="height: 35px; width: 150px">Change Tag</button>
@@ -245,7 +279,7 @@
 	/* This function will search for unique words where the given tag is visible */
 
     document.getElementById('wordSearchBtn').addEventListener('click', function () {
-        var tag = document.getElementById('search').value.trim().toUpperCase();
+        var tag = document.getElementById('searchWordsByTag').value.trim().toUpperCase();
         error.innerText = "";
         if (tag) {
 
@@ -347,48 +381,65 @@
 
         }
         fr.readAsText(this.files[0], "UFT-8");
-         /* Just after the loading search for the ocurences of tag undefined words */   
-        setTimeout(function(){
-        	tag = "TAG_UNDEFINED";
-        	var wordResult = sortSentenceByWord(tag);
+         /* Just after the loading search for the ocurences of tag undefined words */  					// Commented the feature on request 
+        // setTimeout(function(){
+        // 	tag = "TAG_UNDEFINED";
+        // 	var wordResult = sortSentenceByWord(tag);
 
-            if (Object.keys(wordResult).length !== 0) {
-                error.style.color = 'red';
-            	error.innerText = "Please wait Some errors are loading...";
-            	setTimeout(function(){
-            		printSentenceInWords(wordResult, tag);
-	                error.style.color = 'red';
-	            	error.innerText = "Fix following errors for undefined tags...";
-            	},0);
+        //     if (Object.keys(wordResult).length !== 0) {
+        //         error.style.color = 'red';
+        //     	error.innerText = "Please wait Some errors are loading...";
+        //     	setTimeout(function(){
+        //     		printSentenceInWords(wordResult, tag);
+	       //          error.style.color = 'red';
+	       //      	error.innerText = "Fix following errors for undefined tags...";
+        //     	},0);
                
-            } else {
-            	error.style.color = 'red';
-                error.innerText = "Couldn't find the Tag you searched";
-            }
-        },1000);
+        //     } else {
+        //     	error.style.color = 'green';
+        //         error.innerText = "File is good to go";
+        //     }
+        // },1000);
     })
     document.getElementById('unqueWordExpBtn').addEventListener('click', function () {
-        var uniqueWords = [];
+        var uniqueWords = {};
         var uniqueText = "";
         error.innerText = "";
         if (sentences.length > 0) {
 
             error.style.color = 'blue';
-            error.innerText = "Please wait Preparing the Unique Words...";
+            error.innerText = "Preparing the Unique Words...";
             setTimeout(function(){
 
             	for(var sentence of sentences){
             		for(var word of sentence){
-            			if(uniqueWords.indexOf(word.word)<0){
-            				uniqueWords.push(word.word);
-            				uniqueText += word.word + "\r\n";
+            			//var wordIndex = uniqueWords.indexOf(word.word)
+            			if(!(word.word in uniqueWords)){
+            				uniqueWords[word.word]= [word.tag];
+            				// uniqueText += word.word + "\r\n";
+            			}
+            			else{
+            				if(uniqueWords[word.word].indexOf(word.tag)<0){
+									uniqueWords[word.word].push(word.tag)
+
+            				}
             			}
             		}
+            	}
+            	// console.log(uniqueWords);
+            	for(var uniqueWord in uniqueWords){
+					uniqueText += uniqueWord;
+					// console.log(uniqueWord);
+            		for(var tag of uniqueWords[uniqueWord]){
+            			uniqueText += " , " + tag;
+            		}
+            		uniqueText += "\r\n";
+
             	}
 		        var link = document.getElementById('downloadlink');
 		        link.href = makeTextFile(uniqueText);
 		        error.style.color = 'green';
-            	error.innerText = "Unique Words are ready click the download link...";
+            	error.innerText = "Unique Words ready click download..";
 		        link.style.display = 'block';
             },0);
            
