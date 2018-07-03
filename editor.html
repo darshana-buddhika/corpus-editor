@@ -189,7 +189,7 @@
 						<option value="RB"> RB - Adverb</option>
 						<option value="RP"> RP - Particle</option>
                         <option value="UH"> UH - Interjection</option>						
-						<option value="VNF"> VNF - Finite Verbs</option>
+						<option value="VNF"> VFM - Finite Verbs</option>
 						<option value="VNF"> VNF - Verb Non Finite</option>
 						<option value="VNN"> VNN - Verbal Noun</option>
 						<option value="VP"> VP - Verb Participle</option>
@@ -240,7 +240,7 @@
 						<option value="RB"> RB - Adverb</option>
 						<option value="RP"> RP - Particle</option>
                         <option value="UH"> UH - Interjection</option>						
-						<option value="VNF"> VNF - Finite Verbs</option>
+						<option value="VNF"> VFM - Finite Verbs</option>
 						<option value="VNF"> VNF - Verb Non Finite</option>
 						<option value="VNN"> VNN - Verbal Noun</option>
 						<option value="VP"> VP - Verb Participle</option>
@@ -681,7 +681,7 @@
 
         if (wordIndex && sentenceIndex) {
             if (newTag && newTag !== "#") {
-                var confirm = window.confirm("Are sure you want to update?");
+                var confirm = window.confirm("Are you sure you want to update?");
                 if (confirm) {
                     sentences[sentenceIndex][wordIndex].tag = newTag;
                     error.innerText = "tag changed successfull";
@@ -721,7 +721,7 @@
 
         if (wordIndex && sentenceIndex) {
             if (newTag && newTag !== "#") {
-                var confirm = window.confirm("Are sure want to update all tags ?");
+                var confirm = window.confirm("Are you sure you want to update all tags ?");
                 if (confirm) {
                     var oldTag = sentences[sentenceIndex][wordIndex].tag;
                     var wordText = sentences[sentenceIndex][wordIndex].word;
