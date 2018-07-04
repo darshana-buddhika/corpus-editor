@@ -206,7 +206,7 @@
         <hr>
         <div class="tag-wrapper">
             <div class="tag">
-                <h3 id="command">Select a highlited text to set the tag</h3>
+                <h3 id="command">Select a highlighted text to set the tag</h3>
                 <!-- <button id="getTag">click here</button> -->
                 <p id="tag"></p>
                 <!-- <h2 id="error" style="color: red"></h2> -->
@@ -664,10 +664,10 @@
             dd.setAttribute('data-wordIndex', selectedText[1]);
             dd.setAttribute('data-sentenceIndex', selectedText[2]);
             // tag.innerText = selectedText[0];
-            command.innerText = "Select the Tag you want to replace.."
+            command.innerText = "Select the tag you want to replace.."
             error.innerText = "";
         } else {
-            command.innerText = "Select a highlited text to set the tag";
+            command.innerText = "Select a highlighted text to set the tag";
         }
     }
     document.onmouseup = doSomethingWithSelectedText;
@@ -684,7 +684,7 @@
                 var confirm = window.confirm("Are you sure you want to update?");
                 if (confirm) {
                     sentences[sentenceIndex][wordIndex].tag = newTag;
-                    error.innerText = "tag changed successfull";
+                    error.innerText = "tag changed successfully";
                     error.style.color = 'blue';
                     var wordText = sentences[sentenceIndex][wordIndex].word;
                     // console.log(wordText);
@@ -705,7 +705,7 @@
             }
         } else {
         	error.style.color = 'red'
-            error.innerText = "Please select a word to chnage tag";
+            error.innerText = "Please select a word to change tag";
         }
 
     }
@@ -735,7 +735,7 @@
                             }
                         }
                     }
-                    error.innerText = "tag changed successfull";
+                    error.innerText = "tag changed successfully";
                     newTagElement.value = "#";
                     error.style.color = 'blue';
 
@@ -751,7 +751,7 @@
                 error.innerText = "Please enter a new tag";
             }
         } else {
-            error.innerText = "Please select a word to chnage tag";
+            error.innerText = "Please select a word to change tag";
         }
 
     }
