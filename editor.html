@@ -281,6 +281,7 @@
 	/* This function will search for unique words where the given tag is visible */
 
     document.getElementById('wordSearchBtn').addEventListener('click', function () {
+    	clearWordSelection();
         var tag = document.getElementById('searchWordsByTag').value.trim().toUpperCase();
         error.innerText = "";
         if (tag) {
@@ -313,6 +314,7 @@
 
 	/* This function will search for tags where the given word is visible */
     document.getElementById('searchBtn').addEventListener('click', function () {
+    	clearWordSelection();
         var word = document.getElementById('search').value.trim();
         error.innerText = "";
         if (word) {
@@ -404,6 +406,7 @@
         // },1000);
     })
     document.getElementById('unqueWordExpBtn').addEventListener('click', function () {
+    	clearWordSelection()
         var uniqueWords = {};
         var uniqueText = "";
         error.innerText = "";
@@ -757,6 +760,14 @@
         }
 
     }
+
+    function clearWordSelection(){
+
+        var newTagElement = document.getElementById('newTag');
+    	newTagElement.setAttribute('data-wordIndex',"");
+        newTagElement.setAttribute('data-sentenceIndex',"");
+    }
+
     //create sentences using text array
     function createText() {
         var text = "";
